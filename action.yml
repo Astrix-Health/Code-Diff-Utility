@@ -1,6 +1,6 @@
 name: 'Generate Documentation'
 description: 'Generate technical documentation for a PR diff and export it to Notion'
-author: 'Your Name'
+author: 'Astrix Health'
 inputs:
   openai_api_key:
     description: 'OpenAI API key'
@@ -17,8 +17,10 @@ outputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  args:
+    - '--volume'
+    - '${{ github.workspace }}:/workspace'
   env:
     OPENAI_API_KEY: ${{ inputs.openai_api_key }}
     NOTION_API_KEY: ${{ inputs.notion_api_key }}
     NOTION_PAGE_ID: ${{ inputs.notion_page_id }}
-
