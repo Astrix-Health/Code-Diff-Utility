@@ -4,8 +4,11 @@ FROM python:3.8-slim
 RUN apt-get update && apt-get install -y git
 RUN pip install openai requests
 
-# Copy the script into the container
-COPY generate_docs.py /generate_docs.py
+# Set the working directory inside the container
+WORKDIR /workspace
+
+# Copy the entire repository into the container
+COPY . .
 
 # Set the entrypoint to the script
-ENTRYPOINT ["python", "/generate_docs.py"]
+ENTRYPOINT ["python", "/workspace/generate_docs.py"]
