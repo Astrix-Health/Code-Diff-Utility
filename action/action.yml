@@ -1,0 +1,24 @@
+name: 'Generate Documentation'
+description: 'Generate technical documentation for a PR diff and export it to Notion'
+author: 'Your Name'
+inputs:
+  openai_api_key:
+    description: 'OpenAI API key'
+    required: true
+  notion_api_key:
+    description: 'Notion API key'
+    required: true
+  notion_page_id:
+    description: 'Notion Page ID'
+    required: true
+outputs:
+  documentation:
+    description: 'Generated technical documentation'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    OPENAI_API_KEY: ${{ inputs.openai_api_key }}
+    NOTION_API_KEY: ${{ inputs.notion_api_key }}
+    NOTION_PAGE_ID: ${{ inputs.notion_page_id }}
+
