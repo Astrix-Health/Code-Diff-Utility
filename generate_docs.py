@@ -13,7 +13,7 @@ notion_page_id = os.getenv('NOTION_PAGE_ID')
 client = OpenAI(api_key=openai_api_key)
 
 # Get the diff
-result = subprocess.run(['git', 'diff', 'origin/main...HEAD'], stdout=subprocess.PIPE)
+result = subprocess.run(['git', 'diff', 'HEAD~1'], stdout=subprocess.PIPE)
 diff = result.stdout.decode('utf-8')
 print(diff)
 
