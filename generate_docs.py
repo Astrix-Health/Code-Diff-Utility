@@ -25,7 +25,8 @@ completion = client.chat.completions.create(
     ]
 )
 
-documentation = completion.choices[0].message['content'].strip()
+# Extract the generated documentation
+documentation = completion.choices[0].message.content.strip()
 
 # Create a Notion page
 url = "https://api.notion.com/v1/pages"
