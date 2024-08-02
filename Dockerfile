@@ -7,8 +7,8 @@ RUN pip install openai requests
 # Set the working directory inside the container
 WORKDIR /workspace
 
-# Copy the entire repository into the container
-COPY . .
+# Copy the script into the container
+COPY generate_docs.py /workspace/generate_docs.py
 
 # Set the entrypoint to the script
 ENTRYPOINT ["python", "/workspace/generate_docs.py"]
