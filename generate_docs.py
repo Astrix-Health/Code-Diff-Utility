@@ -28,13 +28,37 @@ completion = client.chat.completions.create(
 # Extract the generated documentation
 documentation = completion.choices[0].message.content.strip()
 
-# Create a Notion page
+# Split documentation into chunks of 2000 characters or less
+def split_text(text, max_length=2000):
+    return [text[i:i+max_length] for i in range(0, len(text), max_length)]
+
+chunks = split_text(documentation)
+
+# Create Notion page with the split chunks
 url = "https://api.notion.com/v1/pages"
 headers = {
     "Authorization": f"Bearer {notion_api_key}",
     "Content-Type": "application/json",
     "Notion-Version": "2021-05-13"
 }
+
+children = []
+for chunk in chunks:
+    children.append({
+        "object": "block",
+        "type": "paragraph",
+        "paragraph": {
+            "text": [
+                {
+                    "type": "text",
+                    "text": {
+                        "content": chunk
+                    }
+                }
+            ]
+        }
+    })
+
 data = {
     "parent": { "type": "page_id", "page_id": notion_page_id },
     "properties": {
@@ -47,22 +71,7 @@ data = {
             }
         ]
     },
-    "children": [
-        {
-            "object": "block",
-            "type": "paragraph",
-            "paragraph": {
-                "text": [
-                    {
-                        "type": "text",
-                        "text": {
-                            "content": documentation
-                        }
-                    }
-                ]
-            }
-        }
-    ]
+    "children": children
 }
 
 response = requests.post(url, headers=headers, data=json.dumps(data))
