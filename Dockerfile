@@ -1,7 +1,7 @@
 FROM python:3.8-slim
 
 # Install dependencies
-RUN pip install openai requests json
+RUN pip install openai requests
 
 # Copy the script into the container
 COPY generate_docs.py /generate_docs.py
