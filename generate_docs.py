@@ -8,12 +8,13 @@ import json
 openai_api_key = os.getenv('OPENAI_API_KEY')
 notion_api_key = os.getenv('NOTION_API_KEY')
 notion_page_id = os.getenv('NOTION_PAGE_ID')
+workspace = os.getenv('WORKSPACE', '/workspace')
 
 # Initialize OpenAI client
 client = OpenAI(api_key=openai_api_key)
 
 # Ensure we are in the correct directory
-os.chdir('/workspace')
+os.chdir(workspace)
 
 # Get the diff
 result = subprocess.run(['git', 'diff', 'HEAD~1'], stdout=subprocess.PIPE)
