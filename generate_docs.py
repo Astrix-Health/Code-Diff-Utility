@@ -1,30 +1,31 @@
 import os
 import subprocess
-import openai
+from openai import OpenAI
 import requests
 import json
-
 
 # Get environment variables
 openai_api_key = os.getenv('OPENAI_API_KEY')
 notion_api_key = os.getenv('NOTION_API_KEY')
 notion_page_id = os.getenv('NOTION_PAGE_ID')
 
+# Initialize OpenAI client
+client = OpenAI(api_key=openai_api_key)
+
 # Get the diff
 result = subprocess.run(['git', 'diff', 'origin/main...HEAD'], stdout=subprocess.PIPE)
 diff = result.stdout.decode('utf-8')
 
 # Generate documentation using GPT-4
-openai.api_key = openai_api_key
-response = openai.Completion.create(
-  engine="gpt-4o",
-  prompt=f"Generate technical documentation for the following diff:\n\n{diff}\n\nDescription and Usage:",
-  max_tokens=1500,
-  n=1,
-  stop=None,
-  temperature=0.7
+completion = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": f"Generate technical documentation for the following diff:\n\n{diff}\n\nDescription and Usage:"}
+    ]
 )
-documentation = response.choices[0].text.strip()
+
+documentation = completion.choices[0].message['content'].strip()
 
 # Create a Notion page
 url = "https://api.notion.com/v1/pages"
