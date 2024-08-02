@@ -15,6 +15,7 @@ client = OpenAI(api_key=openai_api_key)
 # Get the diff
 result = subprocess.run(['git', 'diff', 'origin/main...HEAD'], stdout=subprocess.PIPE)
 diff = result.stdout.decode('utf-8')
+print(diff)
 
 # Generate documentation using GPT-4
 completion = client.chat.completions.create(
