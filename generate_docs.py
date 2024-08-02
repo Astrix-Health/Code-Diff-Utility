@@ -12,6 +12,9 @@ notion_page_id = os.getenv('NOTION_PAGE_ID')
 # Initialize OpenAI client
 client = OpenAI(api_key=openai_api_key)
 
+# Ensure we are in the correct directory
+os.chdir('/workspace')
+
 # Get the diff
 result = subprocess.run(['git', 'diff', 'HEAD~1'], stdout=subprocess.PIPE)
 diff = result.stdout.decode('utf-8')
